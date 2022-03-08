@@ -372,6 +372,11 @@ public class GameController {
         assert false;
     }
 
+    /**
+     *
+     * @param player metode så robotterne kan skube hinanden fremad.
+     * @author Anna og Jasmin
+     */
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
             Space space = player.getSpace();
