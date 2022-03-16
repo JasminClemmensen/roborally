@@ -395,7 +395,8 @@ public class GameController {
         }
     }
 
-    void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
+    public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading)
+            throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
         if (other != null){
@@ -417,7 +418,7 @@ public class GameController {
         player.setSpace(space);
     }
 
-    class ImpossibleMoveException extends Exception {
+     public static class ImpossibleMoveException extends Exception {
 
         private Player player;
         private Space space;

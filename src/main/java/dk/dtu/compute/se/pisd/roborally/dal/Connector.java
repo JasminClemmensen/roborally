@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.dal;
 
 import com.mysql.cj.util.StringUtils;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.IOUtil;
+import javafx.application.Platform;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -58,7 +59,7 @@ class Connector {
 			// TODO we should try to diagnose and fix some problems here and
 			//      exit in a more graceful way
 			e.printStackTrace();
-			// Platform.exit();
+			 //Platform.exit();
 		}
     }
     
