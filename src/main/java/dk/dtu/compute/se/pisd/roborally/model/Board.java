@@ -204,6 +204,34 @@ public class Board extends Subject {
         return getSpace(x, y);
     }
 
+    /**
+     * Metode til at få spilleren til at rykke et felt baglæns
+     * @param space feltet spilleren skal lande på
+     * @param heading retning på feltet
+     * @return feltet bag spilleren
+     * @author Jasmin Clemmensen
+     */
+    public Space getback(@NotNull Space space, @NotNull Heading heading) {
+        int x = space.x;
+        int y = space.y;
+        switch (heading) {
+            case SOUTH:
+                y = (y - 1) % height;
+                break;
+            case WEST:
+                x = (x + width + 1) % width;
+                break;
+            case NORTH:
+                y = (y + height + 1) % height;
+                break;
+            case EAST:
+                x = (x - 1) % width;
+                break;
+        }
+
+        return getSpace(x, y);
+    }
+
     public String getStatusMessage() {
         // this is actually a view aspect, but for making assignment V1 easy for
         // the students, this method gives a string representation of the current

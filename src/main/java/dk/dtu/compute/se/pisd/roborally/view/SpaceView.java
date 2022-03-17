@@ -100,20 +100,21 @@ public class SpaceView extends StackPane implements ViewObserver {
             updatePlayer();
 
         }
-        }
-    }
+    }}
 
-    /* Pane pane = new Pane();
-            Rectangle rectangle = new Rectangle(0.0,0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle.setFill(Color.TRANSPARENT);
-            pane.getChildren().add(rectangle);
+    /*
 
-            Line line = new Line(2, SPACE_HEIGHT-2, SPACE_WIDTH-2, SPACE_HEIGHT-2);
-            line.setStroke(Color.RED);
-            line.setStrokeWidth(5);
-            pane.getChildren().add(pane);
+        Pane pane = new Pane();
+        Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+        rectangle.setFill(Color.TRANSPARENT);
+        pane.getChildren().add(rectangle);
 
-     */
+        Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+        line.setStroke(Color.RED);
+        line.setStrokeWidth(5);
+        pane.getChildren().add(pane);
+
+    */
 
 
 

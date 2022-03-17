@@ -38,11 +38,19 @@ public enum Command {
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
     FAST_FORWARD("Fast Fwd"),
+
+    /**Tilføjer manglende programmeringskort
+     * @author Jasmin Clemmensen
+     */
+    THREE_FORWARD("Move three forward"),
+    U_TURN("Turn 180 degrees"),
+    BACKWARDS("Move one back"),
+
     // TODO Assignment V3
     /** @author Mohamad Anwar Meri
      *
      */
-    OPTION_RIGHT_LEFT("RIGHT OR LEFT", RIGHT, LEFT);
+    OPTION_RIGHT_LEFT("Right og left", RIGHT, LEFT);
 
     final public String displayName;
 

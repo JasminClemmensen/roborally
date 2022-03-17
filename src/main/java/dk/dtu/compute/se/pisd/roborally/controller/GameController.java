@@ -288,6 +288,15 @@ public class GameController {
                 case FAST_FORWARD:
                     this.fastForward(player);
                     break;
+                case THREE_FORWARD:
+                    this.threeForward(player);
+                    break;
+                case U_TURN:
+                    this.uTurn(player);
+                    break;
+                case BACKWARDS:
+                    this.backwards(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -335,8 +344,6 @@ public class GameController {
         }
     }
 
-
-
     // TODO Assignment V2
     /**
      * @author Mohamad Anwar Meri
@@ -349,7 +356,45 @@ public class GameController {
             player.setHeading(newHeading1);
         }
     }
+    /**
+    Metoder til de manglende programmeringskort
+     @author Jasmin Clemmensen
+     */
 
+    /**
+     * @param player spilleren skal rykke tre felter frem
+     * @author Jasmin Clemmensen
+     */
+    public void threeForward(@NotNull Player player){
+        moveForward(player);
+        moveForward(player);
+        moveForward(player);
+    }
+
+    /**
+     * @param player spilleren skal vende 180 grader
+     * @author Jasmin Clemmensen
+     */
+    public void uTurn(@NotNull Player player) {
+        Heading currentHeading = player.getHeading();
+        if (currentHeading != null) {
+            Heading newHeading2  = currentHeading.round();
+            player.setHeading(newHeading2);
+        }
+    }
+
+    /**
+     * @param player spilleren skal rykke et felt baglæns
+     * @author Jasmin Clemmensen
+     */
+    public void backwards(@NotNull Player player) {
+        Space currentspace = player.getSpace();
+        if (currentspace != null && player.board == currentspace.board) {
+            Space target = board.getback(currentspace, player.getHeading());
+            if (target != null && target.getPlayer() == null) {
+                player.setSpace(target);
+        }
+    }}
 
     public boolean moveCards(@NotNull CommandCardField source, @NotNull CommandCardField target) {
         CommandCard sourceCard = source.getCard();
@@ -374,7 +419,8 @@ public class GameController {
 
     /**
      *
-     * @param player metode så robotterne kan skube hinanden fremad.
+     * @param player hvis spilleren lander på et felt hvor der allerede står en robot, bliver robotten skubbet videre
+     * metode så robotterne kan skubbe hinanden fremad.
      * @author Anna og Jasmin
      */
     public void moveForward(@NotNull Player player) {
