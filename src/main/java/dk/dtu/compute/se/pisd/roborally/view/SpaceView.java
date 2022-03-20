@@ -22,8 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -32,7 +30,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -71,8 +68,7 @@ public class SpaceView extends StackPane implements ViewObserver {
             this.setStyle("-fx-background-color: black;");
         }
 
-
-        updatePlayer();
+        // updatePlayer();
 
         // This space view should listen to changes of the space
         space.attach(this);
@@ -81,6 +77,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
     private void updatePlayer() {
         this.getChildren().clear();
+
         Player player = space.getPlayer();
         if (player != null) {
             Polygon arrow = new Polygon(0.0, 0.0,
@@ -95,33 +92,29 @@ public class SpaceView extends StackPane implements ViewObserver {
             arrow.setRotate((90 * player.getHeading().ordinal()) % 360);
             this.getChildren().add(arrow);
         }
-
-
-        Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.RED);
-        gc.setLineWidth(5);
-        gc.setLineCap(StrokeLineCap.ROUND);
-        gc.strokeLine(3,SPACE_HEIGHT-3,SPACE_WIDTH-3, SPACE_HEIGHT-3);
-        this.getChildren().add(canvas);
-
-
-            }
-
-        @Override
-        public void updateView (Subject subject){
-            if (subject == this.space) {
-                updatePlayer();
-
-
-            }
-        }
     }
 
+    @Override
+    public void updateView(Subject subject) {
+        if (subject == this.space) {
+            updatePlayer();
 
+        }
+    }}
 
+    /*
 
+        Pane pane = new Pane();
+        Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+        rectangle.setFill(Color.TRANSPARENT);
+        pane.getChildren().add(rectangle);
 
+        Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+        line.setStroke(Color.RED);
+        line.setStrokeWidth(5);
+        pane.getChildren().add(pane);
+
+    */
 
 
 

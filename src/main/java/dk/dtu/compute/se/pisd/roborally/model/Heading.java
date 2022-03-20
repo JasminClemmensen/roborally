@@ -38,4 +38,12 @@ public enum Heading {
     public Heading prev() {
         return values()[(this.ordinal() + values().length - 1) % values().length];
     }
+
+    /**
+     * tilføjelse af metoden så spilleren kan ændre sin retning 180 grader
+     * @return
+     * @author Jasmin Clemmensen
+     */
+    public Heading round() {return values()[(this.ordinal() + 2) % values().length];
+    }
 }
