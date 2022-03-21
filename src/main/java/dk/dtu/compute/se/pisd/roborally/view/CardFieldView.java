@@ -150,6 +150,7 @@ public class CardFieldView extends GridPane implements ViewObserver {
                 label.setText("");
             }
         }
+
     }
 
     private class OnDragDetectedHandler implements EventHandler<MouseEvent> {

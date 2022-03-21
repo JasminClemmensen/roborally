@@ -21,12 +21,15 @@
  */
 package dk.dtu.compute.se.pisd.roborally.model;
 
-import com.google.gson.JsonArray;
+
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
 
-import java.util.Collection;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * ...
@@ -35,6 +38,8 @@ import java.util.Collection;
  *
  */
 public class Space extends Subject {
+    private List<Heading> walls = new ArrayList<>();
+    private List<FieldAction> actions = new ArrayList<>();
 
     public final Board board;
 
@@ -48,6 +53,7 @@ public class Space extends Subject {
         this.x = x;
         this.y = y;
         player = null;
+
     }
 
     public Player getPlayer() {
@@ -70,6 +76,7 @@ public class Space extends Subject {
         }
     }
 
+
     void playerChanged() {
         // This is a minor hack; since some views that are registered with the space
         // also need to update when some player attributes change, the player can
@@ -78,11 +85,12 @@ public class Space extends Subject {
     }
 
 
-    public Collection<FieldAction> getActions() {
-        return null;
+    public List<FieldAction> getActions() {
+        return actions;
+
     }
 
-    public Collection<Heading> getWalls() {
-        return null;
+    public List<Heading> getWalls() {
+        return walls;
     }
 }

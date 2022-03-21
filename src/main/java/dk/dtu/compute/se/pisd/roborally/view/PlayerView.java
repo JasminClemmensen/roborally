@@ -32,8 +32,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 /**
  * ...
  *
@@ -242,6 +240,7 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
         }
+
     }
 
 }

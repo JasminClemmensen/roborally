@@ -37,7 +37,7 @@ import java.sql.Statement;
  *
  */
 class Connector {
-	
+
     private static final String HOST     = "localhost";
     private static final int    PORT     = 3306;
     private static final String DATABASE = "pisu";
@@ -45,9 +45,9 @@ class Connector {
     private static final String PASSWORD = "";
 
     private static final String DELIMITER = ";;";
-    
+
     private Connection connection;
-        
+
     Connector() {
         try {
 			// String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
@@ -59,10 +59,11 @@ class Connector {
 			// TODO we should try to diagnose and fix some problems here and
 			//      exit in a more graceful way
 			e.printStackTrace();
-			 //Platform.exit();
+			 Platform.exit();
+
 		}
     }
-    
+
     private void createDatabaseSchema() {
 
     	String createTablesStatement =
