@@ -90,6 +90,40 @@ public class SpaceView extends StackPane implements ViewObserver {
     public void updateView(Subject subject) {
         if (subject == this.space) {
             this.getChildren().clear();
+
+            // XXXX Her tegner vi alle væge
+
+            Pane pane = new Pane();
+            Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+            rectangle.setFill(Color.TRANSPARENT);
+            pane.getChildren().add(rectangle);
+            for (Heading heading : space.getWalls()) {
+                if (heading == Heading.SOUTH) {
+                    Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                    line.setStroke(Color.RED);
+                    line.setStrokeWidth(5);
+                    line.setStrokeLineCap(StrokeLineCap.ROUND);
+                    pane.getChildren().add(line);
+                }
+                this.getChildren().add(pane);
+
+                // XXX mangle væg på andre sider
+            }
+            Pane pane1 = new Pane();
+            Rectangle rectangle1 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+            rectangle1.setFill(Color.TRANSPARENT);
+            pane1.getChildren().add(rectangle1);
+            for (Heading heading1 : space.getWalls()) {
+                if (heading1 == Heading.NORTH) {
+                    Line line1 = new Line(2, 2, SPACE_WIDTH - 2, 2);
+                    line1.setStroke(Color.RED);
+                    line1.setStrokeWidth(5);
+                    line1.setStrokeLineCap(StrokeLineCap.ROUND);
+                    pane.getChildren().add(line1);
+                }
+                this.getChildren().add(pane1);
+            }
+            // Her tegnes spilleren
             Player player = space.getPlayer();
             if (player != null) {
                 Polygon arrow = new Polygon(0.0, 0.0,
@@ -102,25 +136,12 @@ public class SpaceView extends StackPane implements ViewObserver {
 
                 arrow.setRotate((90 * player.getHeading().ordinal() % 360));
                 this.getChildren().add(arrow);
-
-                Pane pane = new Pane();
-                Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-                rectangle.setFill(Color.TRANSPARENT);
-                pane.getChildren().add(rectangle);
-
-                Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                    line.setStroke(Color.RED);
-                    line.setStrokeWidth(5);
-                    line.setStrokeLineCap(StrokeLineCap.ROUND);
-
-                    pane.getChildren().add(line);
-                    this.getChildren().add(pane);
-
-
-                }
             }
+
+
         }
     }
+}
 
 
 
