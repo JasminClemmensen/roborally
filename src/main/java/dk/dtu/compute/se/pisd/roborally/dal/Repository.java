@@ -138,8 +138,10 @@ class Repository implements IRepository {
 					e1.printStackTrace();
 				}
 			}
+			LoadBoard.saveBoard(game,game.boardName);
 		} else {
 			System.err.println("Game cannot be created in DB, since it has a game id already!");
+			updateGameInDB(game);
 		}
 		return false;
 	}
