@@ -160,12 +160,14 @@ public class LoadBoard {
         Board board = new Board(8, 8);
         Space space = board.getSpace(0, 2);
         space.getWalls().add(Heading.SOUTH);
-        space = board.getSpace(5, 5);
+        space = board.getSpace(3, 5);
         space.getWalls().add(Heading.WEST);
         space = board.getSpace(4, 3);
         space.getWalls().add(Heading.SOUTH);
         space = board.getSpace(0, 1);
         space.getWalls().add(Heading.NORTH);
+        space = board.getSpace(5,7);
+        space.getWalls().add(Heading.EAST);
         return board;
     }
 
