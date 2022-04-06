@@ -156,6 +156,10 @@ public class LoadBoard {
         }
     }
 
+    /**
+     * @return board, vægge på bestemte sider indsættes på boardet.
+     * @author Mohamad Anwar Meri, Jasmin Clemmensen, Anna Elise Høfde
+     */
     public static Board LoadBoard1(){
         Board board = new Board(8, 8);
         Space space = board.getSpace(0, 2);
@@ -168,6 +172,12 @@ public class LoadBoard {
         space.getWalls().add(Heading.NORTH);
         space = board.getSpace(5,7);
         space.getWalls().add(Heading.EAST);
+        space = board.getSpace(6,1);
+        space.getWalls().add(Heading.SOUTH);
+        space = board.getSpace(3,0);
+        space.getWalls().add(Heading.EAST);
+        space = board.getSpace(1,7);      //Tilføjer væg på feltet (1,7)
+        space.getWalls().add(Heading.NORTH);    //Vælger hvilken side væggen skal placeres på (nord)
         return board;
     }
 

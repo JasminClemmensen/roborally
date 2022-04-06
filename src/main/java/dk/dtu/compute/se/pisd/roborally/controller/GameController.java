@@ -421,7 +421,7 @@ public class GameController {
      *
      * @param player hvis spilleren lander på et felt hvor der allerede står en robot, bliver robotten skubbet videre
      * metode så robotterne kan skubbe hinanden fremad.
-     * @author Anna og Jasmin
+     * @author Anna Elise Høfde og Jasmin
      */
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {
