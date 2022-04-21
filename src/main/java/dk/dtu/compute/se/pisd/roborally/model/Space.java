@@ -35,7 +35,7 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class Space extends Subject {
     private List<Heading> walls = new ArrayList<>();
@@ -48,6 +48,13 @@ public class Space extends Subject {
 
     private Player player;
 
+    /**
+     * <p>Constructor for Space.</p>
+     *
+     * @param board a {@link dk.dtu.compute.se.pisd.roborally.model.Board} object.
+     * @param x a int.
+     * @param y a int.
+     */
     public Space(Board board, int x, int y) {
         this.board = board;
         this.x = x;
@@ -56,10 +63,20 @@ public class Space extends Subject {
 
     }
 
+    /**
+     * <p>Getter for the field <code>player</code>.</p>
+     *
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.Player} object.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * <p>Setter for the field <code>player</code>.</p>
+     *
+     * @param player a {@link dk.dtu.compute.se.pisd.roborally.model.Player} object.
+     */
     public void setPlayer(Player player) {
         Player oldPlayer = this.player;
         if (player != oldPlayer &&
@@ -85,11 +102,21 @@ public class Space extends Subject {
     }
 
 
+    /**
+     * <p>Getter for the field <code>actions</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<FieldAction> getActions() {
         return actions;
 
     }
 
+    /**
+     * <p>Getter for the field <code>walls</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<Heading> getWalls() {
         return walls;
     }

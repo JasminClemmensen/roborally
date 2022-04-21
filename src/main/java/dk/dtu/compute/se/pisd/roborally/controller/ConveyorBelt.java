@@ -31,25 +31,35 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class ConveyorBelt extends FieldAction {
 
     private Heading heading;
 
+    /**
+     * <p>Getter for the field <code>heading</code>.</p>
+     *
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.Heading} object.
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * <p>Setter for the field <code>heading</code>.</p>
+     *
+     * @param heading a {@link dk.dtu.compute.se.pisd.roborally.model.Heading} object.
+     */
     public void setHeading(Heading heading) {
         this.heading = heading;
     }
 
 
     /**
+     * {@inheritDoc}
+     *
      * Here we do it in the order of the players.
-     *  @param gameController the gameController of the respective game
-     *  @param space the space this action should be executed for
      * @author Mohamad Anwar Meri
      */
     @Override

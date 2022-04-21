@@ -41,7 +41,7 @@ public enum Heading {
 
     /**
      * tilføjelse af metoden så spilleren kan ændre sin retning 180 grader
-     * @return feltet spilleren skal vende mod
+     * @return
      * @author Jasmin Clemmensen
      */
     public Heading round() {return values()[(this.ordinal() + 2) % values().length];

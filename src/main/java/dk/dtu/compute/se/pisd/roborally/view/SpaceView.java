@@ -41,16 +41,23 @@ import javafx.scene.shape.Line;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
+    /** Constant <code>SPACE_HEIGHT=50</code> */
     final public static int SPACE_HEIGHT = 50; // 60; // 75;
+    /** Constant <code>SPACE_WIDTH=50</code> */
     final public static int SPACE_WIDTH = 50;  // 60; // 75;
 
     public final Space space;
 
 
+    /**
+     * <p>Constructor for SpaceView.</p>
+     *
+     * @param space a {@link dk.dtu.compute.se.pisd.roborally.model.Space} object.
+     */
     public SpaceView(@NotNull Space space) {
         this.space = space;
 
@@ -84,10 +91,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
     @Override
-    /**
-     * @author Mohamad Anwar Meri
-     * Adding walls to the game.
-     */
+    /** {@inheritDoc} */
     public void updateView(Subject subject) {
         if (subject == this.space) {
             this.getChildren().clear();

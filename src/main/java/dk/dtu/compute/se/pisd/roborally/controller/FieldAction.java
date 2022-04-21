@@ -24,10 +24,11 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 
 /**
- * ...
+ * We have here an abstract FieldAction that is simple interface
+ * that can support and executes an action on a given space.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public abstract class FieldAction {
 

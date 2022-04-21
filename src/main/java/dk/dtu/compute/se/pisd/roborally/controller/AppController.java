@@ -50,13 +50,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ...
  * This controller-class is very important in RoboRally application,
  * because we create all important and required things to run and start the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  * @author Mohamad Anwar Meri,  s215713@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class AppController implements Observer {
 
@@ -70,6 +69,11 @@ public class AppController implements Observer {
 
 
 
+    /**
+     * <p>Constructor for AppController.</p>
+     *
+     * @param roboRally a {@link dk.dtu.compute.se.pisd.roborally.RoboRally} object.
+     */
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
@@ -184,7 +188,6 @@ public class AppController implements Observer {
      * This method will exit the RoboRally application, if the user press exit and ok button.
      * If user press exit and cancel, the user will return the application without exiting.
      * After the user exits the application, the game will be saved automatic.
-     *
      */
     public void exit() {
         if (gameController != null) {
@@ -205,11 +208,17 @@ public class AppController implements Observer {
         }
     }
 
+    /**
+     * <p>isGameRunning.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isGameRunning() {
         return gameController != null;
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public void update(Subject subject) {
         // XXX do nothing for now

@@ -29,6 +29,7 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @version $Id: $Id
  */
 public enum Command {
 
@@ -70,10 +71,20 @@ public enum Command {
         this.options = List.of(options);
     }
 
+    /**
+     * <p>isInteractive.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isInteractive() {
         return !options.isEmpty();
     }
 
+    /**
+     * <p>Getter for the field <code>options</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<Command> getOptions() {
         return options;
     }
