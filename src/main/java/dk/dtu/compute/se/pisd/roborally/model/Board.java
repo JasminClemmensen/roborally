@@ -33,6 +33,7 @@ import static dk.dtu.compute.se.pisd.roborally.model.Phase.INITIALISATION;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Jasmin Clemmensen
  */
 public class Board extends Subject {
 
@@ -55,7 +56,6 @@ public class Board extends Subject {
     private int step = 0;
 
     private boolean stepMode;
-    
 
 
     public Board(int width, int height, @NotNull String boardName) {

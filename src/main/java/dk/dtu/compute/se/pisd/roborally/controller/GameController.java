@@ -368,7 +368,7 @@ public class GameController {
      * where there is already a robot,the robot will be pushed on.
      * Which means the robots can push each other forward.
      * @param player
-     * @author Anna Elise Høfde og Jasmin
+     * @author Anna Elise Høfde og Jasmin Clemmensen
      */
     public void moveForward(@NotNull Player player) {
         if (player.board == board) {

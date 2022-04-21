@@ -42,7 +42,7 @@ public class Connector {
     private static final int    PORT     = 3306;
     private static final String DATABASE = "roborally";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "Hamudi1234";
+    private static final String PASSWORD = "jasmin67";
 
     private static final String DELIMITER = ";;";
 

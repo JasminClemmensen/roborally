@@ -31,3 +31,13 @@ CREATE TABLE IF NOT EXISTS Player (
 
 SET FOREIGN_KEY_CHECKS = 1;;
 
+CREATE TABLE IF NOT EXISTS CardField (
+ gameID int NOT NULL,
+ playerID tinyint NOT NULL,
+ type int,
+ position int,
+ visibility int,
+ command int,
+ PRIMARY KEY (gameID, playerID, type, position),
+ FOREIGN KEY (gameID) REFERENCES Game(gameID)
+);;
