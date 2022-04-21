@@ -23,6 +23,7 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
+import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -91,86 +92,86 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (subject == this.space) {
             this.getChildren().clear();
 
-            // XXXX Her tegner vi alle væge
+                    // XXXX Her tegner vi alle væge
 
-            Pane pane = new Pane();
-            Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle.setFill(Color.TRANSPARENT);
-            pane.getChildren().add(rectangle);
-            for (Heading heading : space.getWalls()) {
-                if (heading == Heading.SOUTH) {
-                    Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                    line.setStroke(Color.RED);
-                    line.setStrokeWidth(5);
-                    line.setStrokeLineCap(StrokeLineCap.ROUND);
-                    pane.getChildren().add(line);
+                    Pane pane = new Pane();
+                    Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+                    rectangle.setFill(Color.TRANSPARENT);
+                    pane.getChildren().add(rectangle);
+                    for (Heading heading : space.getWalls()) {
+                        if (heading == Heading.SOUTH) {
+                            Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                            line.setStroke(Color.RED);
+                            line.setStrokeWidth(5);
+                            line.setStrokeLineCap(StrokeLineCap.ROUND);
+                            pane.getChildren().add(line);
+                        }
+                        this.getChildren().add(pane);
+
+                    }
+                    Pane pane1 = new Pane();
+                    Rectangle rectangle1 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+                    rectangle1.setFill(Color.TRANSPARENT);
+                    pane1.getChildren().add(rectangle1);
+                    for (Heading heading1 : space.getWalls()) {
+                        if (heading1 == Heading.NORTH) {
+                            Line line1 = new Line(2, 2, SPACE_WIDTH - 2, 2);
+                            line1.setStroke(Color.RED);
+                            line1.setStrokeWidth(5);
+                            line1.setStrokeLineCap(StrokeLineCap.ROUND);
+                            pane.getChildren().add(line1);
+                        }
+                        this.getChildren().add(pane1);
+                    }
+                    Pane pane2 = new Pane();
+                    Rectangle rectangle2 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+                    rectangle2.setFill(Color.TRANSPARENT);
+                    pane2.getChildren().add(rectangle2);
+                    for (Heading heading2 : space.getWalls()) {
+                        if (heading2 == Heading.EAST) {
+                            Line line2 = new Line(SPACE_WIDTH - 2, 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
+                            line2.setStroke(Color.RED);
+                            line2.setStrokeWidth(5);
+                            line2.setStrokeLineCap(StrokeLineCap.ROUND);
+                            pane.getChildren().add(line2);
+                        }
+                        this.getChildren().add(pane2);
+                    }
+                    Pane pane3 = new Pane();
+                    Rectangle rectangle3 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
+                    rectangle3.setFill(Color.TRANSPARENT);
+                    pane3.getChildren().add(rectangle3);
+                    for (Heading heading3 : space.getWalls()) {
+                        if (heading3 == Heading.WEST) {
+                            Line line3 = new Line(2, 2, 2, SPACE_HEIGHT - 2);
+                            line3.setStroke(Color.RED);
+                            line3.setStrokeWidth(5);
+                            line3.setStrokeLineCap(StrokeLineCap.ROUND);
+                            pane.getChildren().add(line3);
+                        }
+                        this.getChildren().add(pane3);
+                    }
+
+                    // Her tegnes spilleren
+                    Player player = space.getPlayer();
+                    if (player != null) {
+                        Polygon arrow = new Polygon(0.0, 0.0,
+                                10.0, 20.0, 20.0, 0.0); //Størrelse af selve spiller dvs Polygon.
+                        try {
+                            arrow.setFill(Color.valueOf(player.getColor()));
+                        } catch (Exception e) {
+                            arrow.setFill(Color.MEDIUMPURPLE);
+                        }
+
+                        arrow.setRotate((90 * player.getHeading().ordinal() % 360));
+                        this.getChildren().add(arrow);
+                    }
+
+
                 }
-                this.getChildren().add(pane);
-
-                // XXX mangle væg på andre sider
             }
-            Pane pane1 = new Pane();
-            Rectangle rectangle1 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle1.setFill(Color.TRANSPARENT);
-            pane1.getChildren().add(rectangle1);
-            for (Heading heading1 : space.getWalls()) {
-                if (heading1 == Heading.NORTH) {
-                    Line line1 = new Line(2, 2, SPACE_WIDTH - 2, 2);
-                    line1.setStroke(Color.RED);
-                    line1.setStrokeWidth(5);
-                    line1.setStrokeLineCap(StrokeLineCap.ROUND);
-                    pane.getChildren().add(line1);
-                }
-                this.getChildren().add(pane1);
-            }
-            Pane pane2 = new Pane();
-            Rectangle rectangle2 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle2.setFill(Color.TRANSPARENT);
-            pane2.getChildren().add(rectangle2);
-            for (Heading heading2 : space.getWalls()) {
-                if (heading2 == Heading.EAST) {
-                    Line line2 = new Line(SPACE_WIDTH-2,2,SPACE_WIDTH-2,SPACE_HEIGHT-2);
-                    line2.setStroke(Color.RED);
-                    line2.setStrokeWidth(5);
-                    line2.setStrokeLineCap(StrokeLineCap.ROUND);
-                    pane.getChildren().add(line2);
-                }
-                this.getChildren().add(pane2);
-            }
-            Pane pane3 = new Pane();
-            Rectangle rectangle3 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-            rectangle3.setFill(Color.TRANSPARENT);
-            pane3.getChildren().add(rectangle3);
-            for (Heading heading3 : space.getWalls()) {
-                if (heading3 == Heading.WEST) {
-                    Line line3 = new Line(2,2,2,SPACE_HEIGHT-2);
-                    line3.setStroke(Color.RED);
-                    line3.setStrokeWidth(5);
-                    line3.setStrokeLineCap(StrokeLineCap.ROUND);
-                    pane.getChildren().add(line3);
-                }
-                this.getChildren().add(pane3);
-            }
-
-            // Her tegnes spilleren
-            Player player = space.getPlayer();
-            if (player != null) {
-                Polygon arrow = new Polygon(0.0, 0.0,
-                        10.0, 20.0, 20.0, 0.0); //Størrelse af selve spiller dvs Polygon.
-                try {
-                    arrow.setFill(Color.valueOf(player.getColor()));
-                } catch (Exception e) {
-                    arrow.setFill(Color.MEDIUMPURPLE);
-                }
-
-                arrow.setRotate((90 * player.getHeading().ordinal() % 360));
-                this.getChildren().add(arrow);
-            }
-
-
         }
-    }
-}
+
 
 
 

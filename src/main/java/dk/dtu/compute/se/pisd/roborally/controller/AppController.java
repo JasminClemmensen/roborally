@@ -26,11 +26,16 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 
-import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
+import dk.dtu.compute.se.pisd.roborally.dal.Connector;
+import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
+import dk.dtu.compute.se.pisd.roborally.dal.Repository;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 
+import dk.dtu.compute.se.pisd.roborally.view.BoardView;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,14 +43,19 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * ...
+ * This controller-class is very important in RoboRally application,
+ * because we create all important and required things to run and start the game.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Mohamad Anwar Meri,  s215713@dtu.dk
  *
  */
 public class AppController implements Observer {
@@ -54,13 +64,19 @@ public class AppController implements Observer {
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
     final private RoboRally roboRally;
+    private Board board;
 
     private GameController gameController;
+
+
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
     }
 
+    /**
+     * This method starts a new game, with players-number from 2 players to 6 players.
+     */
     public void newGame() {
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
@@ -96,18 +112,50 @@ public class AppController implements Observer {
         }
     }
 
+
+    /**
+     * In this method we save the game in database.
+     */
     public void saveGame() {
         // XXX needs to be implemented eventually
-        RepositoryAccess.getRepository().createGameInDB(gameController.board);
+        Repository repository = new Repository(new Connector());
+        if (this.gameController.board.getGameId() != null) {
+            repository.updateGameInDB(this.gameController.board);
+        } else {
+            repository.createGameInDB(this.gameController.board);
+        }
     }
 
+    /**
+     * In this method we load the game from the database, which was saved in saveGame().
+     */
     public void loadGame() {
         // XXX needs to be implememted eventually
         // for now, we just create a new game
-        if (gameController == null) {
-            newGame();
+        /*if (gameController == null) {
+           newGame();
+         */
+
+        Repository repository = new Repository(new Connector());
+        List<GameInDB> game = repository.getGames();
+        ChoiceDialog choice = new ChoiceDialog();
+        choice.setContentText("Please select and load saved games\uD83D\uDE0A");
+        choice.getItems().addAll(game);
+        choice.showAndWait();
+
+        if (choice.getSelectedItem() != null) {
+            this.board = repository.loadGameFromDB(((GameInDB) choice.getSelectedItem()).id);
+            this.gameController = new GameController(this.board);
+
+            if (this.board.getPhase() == Phase.INITIALISATION) {
+                this.gameController.startProgrammingPhase();
+            }
+            roboRally.createBoardView(gameController);
         }
+
     }
+
+
 
     /**
      * Stop playing the current game, giving the user the option to save
@@ -129,8 +177,15 @@ public class AppController implements Observer {
             return true;
         }
         return false;
-    }
 
+        }
+
+    /**
+     * This method will exit the RoboRally application, if the user press exit and ok button.
+     * If user press exit and cancel, the user will return the application without exiting.
+     * After the user exits the application, the game will be saved automatic.
+     *
+     */
     public void exit() {
         if (gameController != null) {
             Alert alert = new Alert(AlertType.CONFIRMATION);

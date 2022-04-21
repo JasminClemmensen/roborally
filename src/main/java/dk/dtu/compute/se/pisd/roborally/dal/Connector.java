@@ -36,25 +36,26 @@ import java.sql.Statement;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-class Connector {
+public class Connector {
 
     private static final String HOST     = "localhost";
     private static final int    PORT     = 3306;
-    private static final String DATABASE = "pisu";
-    private static final String USERNAME = "user";
-    private static final String PASSWORD = "";
+    private static final String DATABASE = "roborally";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "Hamudi1234";
 
     private static final String DELIMITER = ";;";
 
     private Connection connection;
 
-    Connector() {
+    public Connector() {
         try {
 			// String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
 			String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?serverTimezone=UTC";
 			connection = DriverManager.getConnection(url, USERNAME, PASSWORD);
 
 			createDatabaseSchema();
+			System.out.println("Connection");
 		} catch (SQLException e) {
 			// TODO we should try to diagnose and fix some problems here and
 			//      exit in a more graceful way
@@ -83,6 +84,7 @@ class Connector {
     	} catch (SQLException e) {
     		e.printStackTrace();
     		// TODO error handling
+
     		try {
 				connection.rollback();
 			} catch (SQLException e1) {}

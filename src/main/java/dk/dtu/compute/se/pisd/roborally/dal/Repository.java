@@ -35,7 +35,7 @@ import java.util.List;
  * @author Ekkart Kindler, ekki@dtu.dk
  *
  */
-class Repository implements IRepository {
+public class Repository implements IRepository {
 	
 	private static final String GAME_GAMEID = "gameID";
 
@@ -63,7 +63,7 @@ class Repository implements IRepository {
 
 	private Connector connector;
 	
-	Repository(Connector connector){
+	public Repository(Connector connector){
 		this.connector = connector;
 	}
 
@@ -220,6 +220,7 @@ class Repository implements IRepository {
 				// TODO currently we do not set the games name (needs to be added)
 				game.setPhase(Phase.values()[rs.getInt(GAME_PHASE)]);
 				game.setStep(rs.getInt(GAME_STEP));
+
 			} else {
 				// TODO error handling
 				return null;

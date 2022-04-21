@@ -28,11 +28,14 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Mohamad Anwar Meri, s215713@dtu.dk
+ * @author Jasmin
+ * @author Anna Elise Høfde.
  *
  */
 public class GameController {
 
-    final public Board board;
+    public Board board;
 
     public GameController(@NotNull Board board) {
         this.board = board;
@@ -41,8 +44,9 @@ public class GameController {
     /**
      * This is just some dummy controller operation to make a simple move to see something
      * happening on the board. This method should eventually be deleted!
-     *
+     * Here we change the turn of the current player.
      * @param space the space to which the current player should move
+     * @author Mohamad Anwar Meri
      */
     public void moveCurrentPlayerToSpace(@NotNull Space space) {
         // TODO Assignment V1: method should be implemented by the students:
@@ -54,20 +58,21 @@ public class GameController {
         //     if and when the player is moved (the counter and the status line
         //     message needs to be implemented at another place)
         /**
+         * Here we change the turn of the current player.
          * @author Mohamad Anwar Meri
          */
         Player currentPlayer = board.getCurrentPlayer();
         if (space != null && currentPlayer != null) {
             if (space.getPlayer() == null) {
                 currentPlayer.setSpace(space);
-                //skift spillerens tur.
                 int currentPlayerNumber = board.getPlayerNumber(currentPlayer);
                 Player nextPlayer = board.getPlayer((currentPlayerNumber + 1) % board.getPlayersNumber());
                 board.setCurrentPlayer(nextPlayer);
 
                 /**
-                 * Den opdater sig, ved at regne ud hvor mange brikker den har indtil videre og
-                 * tilføjer man 1 og så får vi den nye antal brik.
+                 * It updates itself by calculating how many pieces it has so far
+                 * and you add 1, then we get the new number of pieces.
+                 * @param board.setCount (board.getCount() + 1);
                  * @author Mohamad Anwar Meri
                  */
                 board.setCount(board.getCount() + 1);
@@ -139,63 +144,92 @@ public class GameController {
         }
     }
 
+
     /**
-     * I executePrograms() bliver vi ind på den do-while løkker i continuePrograms() hele tiden.
+     * All programs must execute,
+     * and this metode make the specifik moves the players ask for
+     * @author Mohamad Anwar Meri
      */
     // XXX: V2
-    public void executePrograms() { //Alle Programs skal execute
+    public void executePrograms() { //All programs must execute
         board.setStepMode(false); //StepMode er false her, fordi vi vil gerne have at alle execute.
         continuePrograms();
 
+        /**
+         * StepMode is false here, because we want to execute all programs
+         * @param StepMode(false)
+         * We get into the do-while loops in continuePrograms () all the time.
+         * @param executePrograms()
+         * @author Mohamad Anwar Meri
+         */
+
     }
 
-    /**
-     * I executeStep() afbryder vi efter et step er gennemført og fortsætter vi ikke.
-     */
+
     // XXX: V2
     public void executeStep() { //Det er bare execute en step ad gang for hver spiller, dvs. ny step med en ny spiller.
         board.setStepMode(true); //StepMode afgør at vi kører continuePrograms(); flere gange, dvs. igen og igen. Eller om vi kører den igennem en gang.
         continuePrograms();
+        /**
+         * It's just execute one step at a time for each player,
+         * which means new step with a new player.
+         * We interrupt after a step is completed, and we do not continue.
+         * @param executeStep()
+         * Determines that we run continuePrograms(); several times, which means. repeatedly. Or if we run it through once
+         * @param StepMode
+         * @author Mohamad Anwar Meri
+         */
     }
 
     /**
-     * Den er private, dvs. den kan ikke have en eksternt kald.
-     * Med continuePrograms executere vi programmeret så langt muligt.
-     * Vi har en do og while som udfører executeNextStep();
-     * I while betyder det at så længe vi er i aktiveret Phase så skal vi udfører executeNextStep();
-     * Hvis while ikke længere hører i aktiveret Phase, så rører vi ud af executeNextStep();
+     * It is private, which means. It cannot have an external call
+     * We execute programmed in this function.
+     * We have a do and while which executes executeNextStep();
      */
     // XXX: V2
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
+        /**
+         * this means that as long as we are in the Enabled Phase then we need to execute executeNextStep ();
+         * If while no longer belongs in enabled Phase, then we move out of executeNextStep();
+         * @param while
+         * @author Mohamad Anwar Meri
+         */
     }
 
+    /**
+     * This method starts by figuring out what the current player is.
+     * Here we check in which Phase this game is an activated Phase otherwise,
+     * we do not have to accept anything if the players do not belong in the activated phase.
+     */
     // XXX: V2
     private void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer(); //executeNextStep starter med at finde ud af hvad den aktuelle spiller.
 
         /**
-         *  Her tjekker vi i hvilken Phase er det her spil en aktivieret Phase ellers skal vi ikke acceptere noget som helst hvis spillerne hører ikke i aktiveret fase.
-         *  Den aktuelle spiller skal ikke være NULL fordi ellers kan vi ikke finde hans kort.
+         *
+         * The current player should not be Null, because otherwise we can not find his card.
+         * Here we find out in which step the currentPlayers are on
+         * @param step
+         * @author Mohamad Anwar Meri
          */
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
-
             int step = board.getStep(); // Her finder vi ud af i hvilken step er vi på.
 
             /**
-             * Her tjekker vi igen om de step ligger indenfor de værdier vi har.
-             * Vi har spiller-register fra 0 op til spiller registersnummer.
+             * Here we check again if the steps are within the values we have.
+             * We have player register from 0 up to player register number "5".
+             * @param Player.NO_REGISTERS
+             * @author Mohamad Anwar Meri
              */
             if (step >= 0 && step < Player.NO_REGISTERS) {
                 CommandCard card = currentPlayer.getProgramField(step).getCard();
                 if (card != null) {
                     Command command = card.command;
                     // TODO Assignment V3
-                    /**
-                     * @author Mohamad Anwar Meri
-                     */
+
                     if (command.isInteractive()) {
                         board.setPhase(Phase.PLAYER_INTERACTION);
                         return;
@@ -228,10 +262,7 @@ public class GameController {
     }
 
     // TODO Assignment V3
-    /**
-     * Hvordan man kan implementer controllen hvis spilleren har valgt hvilken option spilleren vil executer, så spilleren kan fortsætte.
-     * @author Mohamad Anwar Meri
-     */
+
     public void executeOption(Command option) { //det er den option spilleren har valgt
         Player currentPlayer = board.getCurrentPlayer(); // finder ud af hvad er den aktuelle spiller
         if (currentPlayer != null && // her betyder det hvis den aktuelle spiller kun ikke er null skal den gøre noget.
@@ -262,6 +293,18 @@ public class GameController {
         if (!board.isStepMode()) {
             continuePrograms();
         }
+        /**
+         * How to implement the control if the player has chosen which option the player will execute,
+         * so that the player can continue.
+         * @param executeOption
+         * Find out if the player's Phase is an active way where it makes sense
+         * to call the method "executeOption"
+         * @param phase.PLAYER_INTERACTION
+         * If we do not put it, the player will be in the interaction phase,
+         * and then you can not continue playing
+         * @param Phase.ACTIVATION
+         * @author Mohamad Anwar Meri
+         */
     }
 
 
@@ -320,10 +363,39 @@ public class GameController {
 
     }
 */
+    /**
+     * In this method, when the player lands on a field
+     * where there is already a robot,the robot will be pushed on.
+     * Which means the robots can push each other forward.
+     * @param player
+     * @author Anna Elise Høfde og Jasmin
+     */
+    public void moveForward(@NotNull Player player) {
+        if (player.board == board) {
+            Space space = player.getSpace();
+            Heading heading = player.getHeading();
+
+            Space target = board.getNeighbour(space, heading);
+            if (target != null) {
+                try {
+                    moveToSpace(player, target, heading);
+                } catch (ImpossibleMoveException e) {
+                    // we don't do anything here  for now; we just catch the
+                    // exception so that we do no pass it on to the caller
+                    // (which would be very bad style).
+                }
+
+
+            }
+        }
+    }
+
     // TODO Assignment V2
     /**
+     * This method calls the moveForward function twice.
+     * The player should move two times forward.
+     * @param player
      * @author Mohamad Anwar Meri
-     * @param player the player should move two times forward.
      */
     public void fastForward(@NotNull Player player) {
         moveForward(player);
@@ -333,8 +405,10 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * This method turns the player to the cardinal directions that the player choose from program's cards.
+     * Here The player turns to the right
+     * @param player
      * @author Mohamad Anwar Meri
-     * @param player the player should turn to the right
      */
     public void turnRight(@NotNull Player player) {
         Heading currentHeading = player.getHeading();
@@ -346,8 +420,10 @@ public class GameController {
 
     // TODO Assignment V2
     /**
+     * This method turns the player to the cardinal directions that the player choose from program's cards.
+     * Here The player turns to the left
+     * @param player
      * @author Mohamad Anwar Meri
-     * @param player the player should turn to the left
      */
     public void turnLeft(@NotNull Player player) {
         Heading currentHeading = player.getHeading();
@@ -356,13 +432,11 @@ public class GameController {
             player.setHeading(newHeading1);
         }
     }
-    /**
-    Metoder til de manglende programmeringskort
-     @author Jasmin Clemmensen
-     */
 
     /**
-     * @param player spilleren skal rykke tre felter frem
+     * This method calls the moveForward function thrice.
+     * The player should move three times forward.
+     * @param player
      * @author Jasmin Clemmensen
      */
     public void threeForward(@NotNull Player player){
@@ -372,7 +446,8 @@ public class GameController {
     }
 
     /**
-     * @param player spilleren skal vende 180 grader
+     * This method turns the player 180 degrees
+     * @param player
      * @author Jasmin Clemmensen
      */
     public void uTurn(@NotNull Player player) {
@@ -383,8 +458,8 @@ public class GameController {
         }
     }
 
-    /**
-     * @param player spilleren skal rykke et felt baglæns
+    /** This method moves the player a field backwards
+     * @param player
      * @author Jasmin Clemmensen
      */
     public void backwards(@NotNull Player player) {
@@ -408,43 +483,44 @@ public class GameController {
         }
     }
 
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
+
     public void notImplemented() {
         // XXX just for now to indicate that the actual method is not yet implemented
         assert false;
+
+        /**
+         * @param notImplemented method called when no corresponding controller operation is implemented yet. This
+         * should eventually be removed.
+         */
     }
 
     /**
-     *
-     * @param player hvis spilleren lander på et felt hvor der allerede står en robot, bliver robotten skubbet videre
-     * metode så robotterne kan skubbe hinanden fremad.
-     * @author Anna Elise Høfde og Jasmin
+     * This method is used to get a player stopped by wall.
+     * @param player
+     * @param space
+     * @param heading
+     * @throws ImpossibleMoveException
+     * @author Mohamad Anwar Meri
      */
-    public void moveForward(@NotNull Player player) {
-        if (player.board == board) {
-            Space space = player.getSpace();
-            Heading heading = player.getHeading();
-
-            Space target = board.getNeighbour(space, heading);
-            if (target != null) {
-                try {
-                    moveToSpace(player, target, heading);
-                } catch (ImpossibleMoveException e) {
-                    // we don't do anything here  for now; we just catch the
-                    // exception so that we do no pass it on to the caller
-                    // (which would be very bad style).
-                }
-            }
-        }
-    }
-
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading)
             throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
+        if(!space.getWalls().isEmpty()){
+            for (int i = 0; i < space.getWalls().size();i++){
+                if(space.getWalls().get(i).next().next() == heading){
+                    throw new ImpossibleMoveException(player, space, heading);
+                }
+            }
+
+        }
+        else if(!player.getSpace().getWalls().isEmpty()){
+            for(int i = 0; i < player.getSpace().getWalls().size(); i++){
+                if(player.getSpace().getWalls().get(i) == heading){
+                    throw new ImpossibleMoveException(player, space, heading);
+                }
+            }
+        }
         if (other != null){
             Space target = board.getNeighbour(space, heading);
             if (target != null) {

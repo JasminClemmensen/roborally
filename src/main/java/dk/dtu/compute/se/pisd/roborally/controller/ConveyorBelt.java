@@ -45,13 +45,16 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
+
+    /**
+     * Here we do it in the order of the players.
+     *  @param gameController the gameController of the respective game
+     *  @param space the space this action should be executed for
+     * @author Mohamad Anwar Meri
+     */
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
         // TODO needs to be implemented
-        /**
-         * @author Mohamad Anwar Meri
-         */
-        // Here we do it in the order of the players.
         Board board = space.board;
         if (board != null && gameController.board == board){
             Player player = space.getPlayer();

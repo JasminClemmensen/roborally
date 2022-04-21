@@ -79,6 +79,7 @@ public class BoardView extends VBox implements ViewObserver {
 
         board.attach(this);
         update(board);
+
     }
 
     @Override
@@ -86,6 +87,7 @@ public class BoardView extends VBox implements ViewObserver {
         if (subject == board) {
             Phase phase = board.getPhase();
             statusLabel.setText(board.getStatusMessage());
+
 
 
         }
