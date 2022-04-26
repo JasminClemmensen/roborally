@@ -55,6 +55,7 @@ import java.util.Optional;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  * @author Mohamad Anwar Meri,  s215713@dtu.dk
+ * @author Anna Elise Høfde
  * @version $Id: $Id
  */
 public class AppController implements Observer {
@@ -95,6 +96,11 @@ public class AppController implements Observer {
             }
         }
 
+        /**
+         * @param dialog1 her laves dialogen så brugeren kan vælge imellem forskellige spilleplader.
+         * @author Anna Elise Høfde
+         */
+
         ChoiceDialog<String> dialog1 = new ChoiceDialog<>(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         dialog1.setTitle("Board");
         dialog1.setHeaderText("Choose board");
@@ -105,6 +111,10 @@ public class AppController implements Observer {
         if (result1.isPresent()) {
             board = LoadBoard.loadBoard(result1.get());
         }
+
+        /**
+         * @param dialog her kan brugeren vælge hvor mange spillere de vil spille.
+         */
 
         ChoiceDialog<Integer> dialog = new ChoiceDialog<>(PLAYER_NUMBER_OPTIONS.get(0), PLAYER_NUMBER_OPTIONS);
         dialog.setTitle("Player number");
