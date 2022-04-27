@@ -51,7 +51,7 @@ public enum Command {
     /** @author Mohamad Anwar Meri
      *
      */
-    OPTION_RIGHT_LEFT("Right og left", RIGHT, LEFT);
+    OPTION_RIGHT_LEFT("Right or left", RIGHT, LEFT);
 
     final public String displayName;
 

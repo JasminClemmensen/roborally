@@ -36,8 +36,7 @@ CREATE TABLE IF NOT EXISTS CardField (
  playerID tinyint NOT NULL,
  type int,
  position int,
- visibility int,
  command int,
- PRIMARY KEY (gameID, playerID, type, position),
+ PRIMARY KEY (gameID, playerID, type, position, command),
  FOREIGN KEY (gameID) REFERENCES Game(gameID)
 );;

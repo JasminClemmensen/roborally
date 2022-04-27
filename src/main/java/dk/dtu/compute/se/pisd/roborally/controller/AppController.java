@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.dal.Connector;
 import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
 import dk.dtu.compute.se.pisd.roborally.dal.Repository;
+import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
@@ -145,7 +146,7 @@ public class AppController implements Observer {
             // XXX: V2
             // board.setCurrentPlayer(board.getPlayer(0));
             gameController.startProgrammingPhase();
-
+            RepositoryAccess.getRepository().createGameInDB(board);
             roboRally.createBoardView(gameController);
         }
     }
@@ -159,8 +160,6 @@ public class AppController implements Observer {
         Repository repository = new Repository(new Connector());
         if (this.gameController.board.getGameId() != null) {
             repository.updateGameInDB(this.gameController.board);
-        } else {
-            repository.createGameInDB(this.gameController.board);
         }
     }
 
@@ -176,13 +175,12 @@ public class AppController implements Observer {
 
         Repository repository = new Repository(new Connector());
         List<GameInDB> game = repository.getGames();
-        ChoiceDialog choice = new ChoiceDialog();
+        ChoiceDialog<GameInDB> choice = new ChoiceDialog<GameInDB>(game.get(0), game);
         choice.setContentText("Please select and load saved games\uD83D\uDE0A");
-        choice.getItems().addAll(game);
         choice.showAndWait();
 
         if (choice.getSelectedItem() != null) {
-            this.board = repository.loadGameFromDB(((GameInDB) choice.getSelectedItem()).id);
+            this.board = repository.loadGameFromDB(choice.getSelectedItem().id);
             this.gameController = new GameController(this.board);
 
             if (this.board.getPhase() == Phase.INITIALISATION) {
