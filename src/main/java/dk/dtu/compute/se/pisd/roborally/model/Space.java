@@ -112,6 +112,7 @@ public class Space extends Subject {
 
     }
 
+
     /**
      * <p>Getter for the field <code>walls</code>.</p>
      *

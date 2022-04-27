@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.BoardTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.SpaceTemplate;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
@@ -62,62 +63,64 @@ public class LoadBoard {
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            return new Board(8, 8);
         }
 
-		// In simple cases, we can create a Gson object with new Gson():
+        // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
-		Board result;
-		// FileReader fileReader = null;
+        Board result;
+        // FileReader fileReader = null;
         JsonReader reader = null;
-		try {
-			// fileReader = new FileReader(filename);
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+        try {
+            // fileReader = new FileReader(filename);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-			result = new Board(template.width, template.height);
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
+            result = new Board(template.width, template.height);
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
-			reader.close();
-			return result;
-		} catch (IOException e1) {
+            reader.close();
+            return result;
+        } catch (IOException e1) {
             if (reader != null) {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e2) {}
-			}
-		}
-		return null;
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
     }
 
     /**
      * <p>saveBoard.</p>
      *
      * @param board a {@link dk.dtu.compute.se.pisd.roborally.model.Board} object.
-     * @param name a {@link java.lang.String} object.
+     * @param name  a {@link java.lang.String} object.
      */
     public static void saveBoard(Board board, String name) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
 
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                Space space = board.getSpace(i, j);
                 if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
                     SpaceTemplate spaceTemplate = new SpaceTemplate();
                     spaceTemplate.x = space.x;
@@ -171,41 +174,16 @@ public class LoadBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
         }
     }
-
-    /**
-     * <p>LoadBoard1.</p>
-     *
-     * @return board, vægge på bestemte sider indsættes på boardet.
-     * @author Mohamad Anwar Meri, Jasmin Clemmensen, Anna Elise Høfde
-     */
-    public static Board LoadBoard1(){
-        Board board = new Board(8, 8);
-        Space space = board.getSpace(0, 2);
-        space.getWalls().add(Heading.SOUTH);
-        space = board.getSpace(3, 5);
-        space.getWalls().add(Heading.WEST);
-        space = board.getSpace(4, 3);
-        space.getWalls().add(Heading.SOUTH);
-        space = board.getSpace(0, 1);
-        space.getWalls().add(Heading.NORTH);
-        space = board.getSpace(5,7);
-        space.getWalls().add(Heading.EAST);
-        space = board.getSpace(6,1);
-        space.getWalls().add(Heading.SOUTH);
-        space = board.getSpace(3,0);
-        space.getWalls().add(Heading.EAST);
-        space = board.getSpace(1,7);      //Tilføjer væg på feltet (1,7)
-        space.getWalls().add(Heading.NORTH);    //Vælger hvilken side væggen skal placeres på (nord)
-        return board;
-    }
-
 }
+

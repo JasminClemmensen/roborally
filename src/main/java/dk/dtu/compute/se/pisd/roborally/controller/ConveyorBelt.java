@@ -56,10 +56,14 @@ public class ConveyorBelt extends FieldAction {
     }
 
 
+    public ConveyorBelt(Heading heading){
+        this.heading = heading;
+    }
+
     /**
      * {@inheritDoc}
-     *
-     * Here we do it in the order of the players.
+     * <p>
+    * Here we do it in the order of the players.
      * @author Mohamad Anwar Meri
      */
     @Override
@@ -82,3 +86,5 @@ public class ConveyorBelt extends FieldAction {
     }
 
 }
+
+

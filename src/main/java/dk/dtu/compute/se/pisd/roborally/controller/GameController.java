@@ -262,6 +262,14 @@ public class GameController {
                 if (nextPlayerNumber < board.getPlayersNumber()) {
                     board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
                 } else {
+                    for(int i = 0; i < board.getPlayersNumber(); i++) {
+                        Player player = board.getPlayer(i);
+                        if (player != null && player.getSpace() != null && player.getSpace().getActions() != null) {
+                            for (FieldAction action : player.getSpace().getActions()) {
+                                action.doAction(this, player.getSpace());
+                            }
+                        }
+                    }
                     step++;
                     if (step < Player.NO_REGISTERS) {
                         makeProgramFieldsVisible(step);
@@ -373,23 +381,6 @@ public class GameController {
         }
     }
 
-    // TODO Assignment V2
-  /*  /**
-     * @author Mohamad Anwar Meri
-     * @param player the heading where the player should move.
-     */
-    /*
-    public void moveForward(@NotNull Player player) {
-        Space currentspace = player.getSpace();
-        if (currentspace != null && player.board == currentspace.board) {
-            Space target = board.getNeighbour(currentspace, player.getHeading());
-            if (target != null && target.getPlayer() == null) {
-                player.setSpace(target);
-            }
-        }
-
-    }
-*/
     /**
      * In this method, when the player lands on a field
      * where there is already a robot,the robot will be pushed on.
@@ -525,11 +516,6 @@ public class GameController {
         }
     }
 
-    public void Who_Is_The_Winner(Player player) {
-        Alert message = new Alert(Alert.AlertType.INFORMATION, "Player \"" + player.getName() + "\" has won the game");
-        this.win = true;
-        message.showAndWait();
-    }
 
     /**
      * <p>notImplemented.</p>
@@ -591,7 +577,8 @@ public class GameController {
         player.setSpace(space);
     }
 
-     public static class ImpossibleMoveException extends Exception {
+
+    public static class ImpossibleMoveException extends Exception {
 
         private Player player;
         private Space space;

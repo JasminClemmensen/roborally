@@ -29,16 +29,18 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @author Mohamad Anwar Meri,  s215713@dtu.dk
+ * @author Jasmin Clemmensen
  * @version $Id: $Id
  */
 public enum Command {
 
     // This is a very simplistic way of realizing different commands.
 
-    FORWARD("Fwd"),
+    FORWARD("Forward"),
     RIGHT("Turn Right"),
     LEFT("Turn Left"),
-    FAST_FORWARD("Fast Fwd"),
+    FAST_FORWARD("Fast Forward"),
 
     /**Tilføjer manglende programmeringskort
      * @author Jasmin Clemmensen
@@ -55,10 +57,6 @@ public enum Command {
 
     final public String displayName;
 
-    /*Command(String displayName) {
-        this.displayName = displayName;
-    }
-     */
     // TODO Assignment V3
     /**
      * @author Mohamad Anwar Meri

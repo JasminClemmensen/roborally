@@ -118,6 +118,7 @@ public class Repository implements IRepository {
 				createPlayersInDB(game);
 				/* TOODO this method needs to be implemented first
 				 */
+				createCardFieldsInDB(game);
 
 				// since current player is a foreign key, it can oly be
 				// inserted after the players are created, since MySQL does
@@ -189,6 +190,7 @@ public class Repository implements IRepository {
 
             connection.commit();
             connection.setAutoCommit(true);
+
 			return true;
 		} catch (SQLException e) {
 			// TODO error handling
@@ -216,24 +218,40 @@ public class Repository implements IRepository {
 			int type = rs.getInt(3);
 			int position = rs.getInt(4);
 			int playerID = rs.getInt(2);
+			CommandCardField commandCardField;
+			CommandCard commandCard;
 
-			Player player = game.getPlayer(playerID);
-			CommandCardField commandCardField = null;
-			if(type == 0){
-				commandCardField = player.getProgramField(position);
-			}else{
-				commandCardField = player.getCardField(position);
-			}
-			if(commandCardField.getCard() != null) {
-				Command command = commandCardField.getCard().command;
-				rs.updateInt(COMMAND_COMMAND, command.ordinal());
-			}else{
-				rs.updateInt(COMMAND_COMMAND, -1);
+			for (int i = 0; i < game.getPlayersNumber(); i++) {
+				Player player = game.getPlayer(i);
+
+				if (type == 1 && playerID == i) {
+					commandCardField = player.getCardField(position);
+					commandCard = commandCardField.getCard();
+
+				} else if (type == 0 && playerID == i) {
+					commandCardField = player.getProgramField(position);
+					commandCard = commandCardField.getCard();
+				} else {
+					commandCardField = null;
+					commandCard = null;
+				}
+
+				if (commandCardField != null) {
+					rs.updateInt(5, 1);
+
+					if (commandCard != null) {
+						rs.updateInt(6, commandCard.command.ordinal());
+					} else {
+						rs.updateNull(6);
+						rs.updateInt(5, 0);
+					}
+				}
 			}
 			rs.updateRow();
 		}
 		rs.close();
 	}
+
 	
 	@Override
 	public Board loadGameFromDB(int id) {
@@ -333,53 +351,53 @@ public class Repository implements IRepository {
 			rs.updateInt(PLAYER_POSITION_Y, player.getSpace().y);
 			rs.updateInt(PLAYER_HEADING, player.getHeading().ordinal());
 			rs.insertRow();
-			createCardFieldsInDB(game, i);
 		}
 
 		rs.close();
 	}
-	private boolean createCardFieldsInDB(Board game, int playerIndex) throws SQLException {
+	private boolean createCardFieldsInDB(Board game) throws SQLException {
 		try {
-			PreparedStatement ps = getSelectCardsStatementU();
+			PreparedStatement ps = connector.getConnection().prepareStatement("SELECT * FROM cardfield WHERE gameID = ?");
 			ps.setInt(1, game.getGameId());
+			ps = connector.getConnection().prepareStatement("INSERT INTO cardfield (gameID, playerID, type, position, visibility, command) VALUES (?,?,?,?,?,?)");
 
-			Player player = game.getPlayer(playerIndex);
-			ResultSet rs = ps.executeQuery();
-			for(int i = 0; i < Player.NO_CARDS; i++) {
-				rs.moveToInsertRow();
-				rs.updateInt(COMMAND_GAMEDID, game.getGameId());
-				rs.updateInt(COMMAND_PLAYERID, playerIndex);
-				rs.updateInt(COMMAND_TYPE, 1);
-				rs.updateInt(COMMAND_POSITION, i);
-				if (player.getCardField(i).getCard() != null) {
-					rs.updateInt(COMMAND_COMMAND, player.getCardField(i).getCard().command.ordinal());
-				} else {
-					rs.updateInt(COMMAND_COMMAND, -1);
+			for (int i = 0; i < game.getPlayersNumber(); i++) {
+				Player player = game.getPlayer(i);
+				for (int j = 0; j < player.NO_REGISTERS; j++) {
+					ps.setInt(1, game.getGameId());
+					ps.setInt(2, i);
+					ps.setInt(3, 0);
+					ps.setInt(4, j);
+					ps.setBoolean(5, player.getProgramField(j).isVisible());
+					if (player.getProgramField(j).getCard() != null) {
+						ps.setInt(6, player.getProgramField(j).getCard().command.ordinal());
+					} else {
+						ps.setInt(6,-1);
+					}
+					ps.execute();
 				}
-				rs.insertRow();
-			}
+				for (int j = 0; j < player.NO_CARDS; j++) {
 
-			for (int j = 0; j < Player.NO_REGISTERS; j++) {
-				rs.moveToInsertRow();
-				rs.updateInt(COMMAND_GAMEDID, game.getGameId());
-				rs.updateInt(COMMAND_PLAYERID, playerIndex);
-				rs.updateInt(COMMAND_TYPE, 0);
-				rs.updateInt(COMMAND_POSITION, j);
-				if (player.getProgramField(j).getCard() != null) {
-					rs.updateInt(COMMAND_COMMAND, player.getProgramField(j).getCard().command.ordinal());
-				} else {
-					rs.updateInt(COMMAND_COMMAND, -1);
-				}
-				rs.insertRow();
-				}
-			return true;
-			} catch(SQLException ex) {
+					ps.setInt(1, game.getGameId());
+					ps.setInt(2, i);
+					ps.setInt(3, 1);
+					ps.setInt(4, j);
+					ps.setBoolean(5, player.getCardField(j).isVisible());
+					if (player.getCardField(j).getCard() != null) {
+						ps.setInt(6, player.getCardField(j).getCard().command.ordinal());
+					} else {
+						ps.setInt(6,-1);
+					}
+					ps.execute();
+				}}return true;
+		} catch(
+				SQLException ex)
+
+		{
 			ex.printStackTrace();
 			return false;
 		}
 	}
-
-
 
 	private void loadPlayersFromDB(Board game) throws SQLException {
 		PreparedStatement ps = getSelectPlayersASCStatement();
@@ -417,28 +435,35 @@ public class Repository implements IRepository {
 		int playerID;
 		int type;
 		int position;
+		Object command;
 
 		while (rs.next()) {
-			playerID = rs.getInt(COMMAND_PLAYERID);
-			type =	rs.getInt(COMMAND_TYPE);
-			position = rs.getInt(COMMAND_POSITION);
-			int commandID = rs.getInt(COMMAND_COMMAND);
+			for (int i = 0; i < game.getPlayersNumber(); i++) {
+				playerID = rs.getInt(2);
+				type = rs.getInt(3);
+				position = rs.getInt(4);
+				command = rs.getObject(6);
 
-			Player player = game.getPlayer(playerID);
 
-			if(commandID > 0) {
-				Command command = Command.values()[commandID];
-				if (type == 0) {
-					player.getProgramField(position).setCard(new CommandCard(command));
-				} else {
-					player.getCardField(position).setCard(new CommandCard(command));
+				Player player = game.getPlayer(playerID);
+
+				if (command != null) {
+					if (type == 1) {
+						CommandCardField commandCardField;
+						Command c = Command.values()[(int) command];
+						CommandCard commandCard = new CommandCard(c);
+						commandCardField = player.getCardField(position);
+						commandCardField.setCard(commandCard);
+					} else if (type == 0) {
+						CommandCardField commandCardField;
+						Command c = Command.values()[(int) command];
+						CommandCard commandCard = new CommandCard(c);
+						commandCardField = player.getProgramField(position);
+						commandCardField.setCard(commandCard);
+					}
 				}
 			}
-
-
-
-		}
-		rs.close();
+		}rs.close();
 	}
 
 	private void updatePlayersInDB(Board game) throws SQLException {
@@ -564,6 +589,7 @@ public class Repository implements IRepository {
 		}
 		return select_players_asc_stmt;
 	}
+
 	
 	private static final String SQL_SELECT_GAMES =
 			"SELECT gameID, name FROM Game";

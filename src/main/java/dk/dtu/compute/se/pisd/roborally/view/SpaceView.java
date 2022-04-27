@@ -23,7 +23,9 @@ package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
+import dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.Gear;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
@@ -31,11 +33,8 @@ import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.*;
 import org.jetbrains.annotations.NotNull;
-import javafx.scene.shape.Line;
 
 /**
  * ...
@@ -45,9 +44,13 @@ import javafx.scene.shape.Line;
  */
 public class SpaceView extends StackPane implements ViewObserver {
 
-    /** Constant <code>SPACE_HEIGHT=50</code> */
+    /**
+     * Constant <code>SPACE_HEIGHT=50</code>
+     */
     final public static int SPACE_HEIGHT = 50; // 60; // 75;
-    /** Constant <code>SPACE_WIDTH=50</code> */
+    /**
+     * Constant <code>SPACE_WIDTH=50</code>
+     */
     final public static int SPACE_WIDTH = 50;  // 60; // 75;
 
     public final Space space;
@@ -87,8 +90,25 @@ public class SpaceView extends StackPane implements ViewObserver {
 
 
     private void updatePlayer() {
+        Player player = space.getPlayer();
+        if (player != null) {
+            Polygon arrow = new Polygon(0.0, 0.0,
+                    10.0, 20.0, 20.0, 0.0);
+            try {
+                arrow.setFill(Color.valueOf(player.getColor()));
+            } catch (Exception e) {
+                arrow.setFill(Color.MEDIUMPURPLE);
+            }
+            arrow.setRotate((90 * player.getHeading().ordinal() % 360));
+            this.getChildren().add(arrow);
+        }
     }
 
+
+    /**
+     * ...
+     * @author Mohamad Anwar Meri, s215713@dtu.dk
+     */
 
     @Override
     /** {@inheritDoc} */
@@ -96,145 +116,53 @@ public class SpaceView extends StackPane implements ViewObserver {
         if (subject == this.space) {
             this.getChildren().clear();
 
-                    // XXXX Her tegner vi alle væge
+            // XXXX Her tegner vi alle væge
+            Pane pane = new Pane();
+            for (Heading wall : space.getWalls()) {
+                Polygon rectangle = switch (wall) {
+                    case SOUTH -> new Polygon(0, SPACE_HEIGHT - 2, SPACE_WIDTH, SPACE_HEIGHT - 2,
+                            SPACE_WIDTH, SPACE_HEIGHT, 0, SPACE_HEIGHT);
+                    case WEST -> new Polygon(0,0, 2,0, 2, SPACE_HEIGHT, 0, SPACE_HEIGHT);
+                    case NORTH -> new Polygon(0,0, SPACE_WIDTH, 0, SPACE_WIDTH, 2 ,0 , 2);
+                    case EAST -> new Polygon(SPACE_WIDTH-2, 0, SPACE_WIDTH, 0, SPACE_WIDTH, SPACE_HEIGHT,
+                            SPACE_WIDTH - 2,SPACE_HEIGHT);
+                    default -> null;
+                };
 
-                    Pane pane = new Pane();
-                    Rectangle rectangle = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-                    rectangle.setFill(Color.TRANSPARENT);
+                if( rectangle != null) {
+                    rectangle.setFill(Color.RED);
                     pane.getChildren().add(rectangle);
-                    for (Heading heading : space.getWalls()) {
-                        if (heading == Heading.SOUTH) {
-                            Line line = new Line(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                            line.setStroke(Color.RED);
-                            line.setStrokeWidth(5);
-                            line.setStrokeLineCap(StrokeLineCap.ROUND);
-                            pane.getChildren().add(line);
-                        }
-                        this.getChildren().add(pane);
-
-                    }
-                    Pane pane1 = new Pane();
-                    Rectangle rectangle1 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-                    rectangle1.setFill(Color.TRANSPARENT);
-                    pane1.getChildren().add(rectangle1);
-                    for (Heading heading1 : space.getWalls()) {
-                        if (heading1 == Heading.NORTH) {
-                            Line line1 = new Line(2, 2, SPACE_WIDTH - 2, 2);
-                            line1.setStroke(Color.RED);
-                            line1.setStrokeWidth(5);
-                            line1.setStrokeLineCap(StrokeLineCap.ROUND);
-                            pane.getChildren().add(line1);
-                        }
-                        this.getChildren().add(pane1);
-                    }
-                    Pane pane2 = new Pane();
-                    Rectangle rectangle2 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-                    rectangle2.setFill(Color.TRANSPARENT);
-                    pane2.getChildren().add(rectangle2);
-                    for (Heading heading2 : space.getWalls()) {
-                        if (heading2 == Heading.EAST) {
-                            Line line2 = new Line(SPACE_WIDTH - 2, 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                            line2.setStroke(Color.RED);
-                            line2.setStrokeWidth(5);
-                            line2.setStrokeLineCap(StrokeLineCap.ROUND);
-                            pane.getChildren().add(line2);
-                        }
-                        this.getChildren().add(pane2);
-                    }
-                    Pane pane3 = new Pane();
-                    Rectangle rectangle3 = new Rectangle(0.0, 0.0, SPACE_WIDTH, SPACE_HEIGHT);
-                    rectangle3.setFill(Color.TRANSPARENT);
-                    pane3.getChildren().add(rectangle3);
-                    for (Heading heading3 : space.getWalls()) {
-                        if (heading3 == Heading.WEST) {
-                            Line line3 = new Line(2, 2, 2, SPACE_HEIGHT - 2);
-                            line3.setStroke(Color.RED);
-                            line3.setStrokeWidth(5);
-                            line3.setStrokeLineCap(StrokeLineCap.ROUND);
-                            pane.getChildren().add(line3);
-                        }
-                        this.getChildren().add(pane3);
-                    }
-
-                    // Her tegnes spilleren
-                    Player player = space.getPlayer();
-                    if (player != null) {
-                        Polygon arrow = new Polygon(0.0, 0.0,
-                                10.0, 20.0, 20.0, 0.0); //Størrelse af selve spiller dvs Polygon.
-                        try {
-                            arrow.setFill(Color.valueOf(player.getColor()));
-                        } catch (Exception e) {
-                            arrow.setFill(Color.MEDIUMPURPLE);
-                        }
-
-                        arrow.setRotate((90 * player.getHeading().ordinal() % 360));
-                        this.getChildren().add(arrow);
-                    }
-
-
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*Canvas canvas = new Canvas(SPACE_WIDTH, SPACE_HEIGHT);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.setStroke(Color.RED);
-                    gc.setLineWidth(5);
-                    gc.setLineCap(StrokeLineCap.ROUND);
-                     for (Heading wall : space.getWalls()) {
-                switch (wall) {
-                    case SOUTH:
-                        line.strokeLine(2, SPACE_HEIGHT - 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                        break;
-                    case WEST:
-                        gc.strokeLine(2, 2, 2, SPACE_HEIGHT - 2);
-                        break;
-                    case NORTH:
-                        gc.strokeLine(2, 2, SPACE_WIDTH - 2, 2);
-                        break;
-                    case EAST:
-                        gc.strokeLine(SPACE_WIDTH - 2, 2, SPACE_WIDTH - 2, SPACE_HEIGHT - 2);
-                        break;
-
                 }
             }
 
-             for (FieldAction action : space.getActions()) {
+            this.getChildren().add(pane);
+
+            for (FieldAction action : space.getActions()) {
                 if (action instanceof ConveyorBelt) {
                     ConveyorBelt conveyorBelt = (ConveyorBelt) action;
                     Polygon arrow = new Polygon(0.0, 0.0,
-                            30.0, 60.0,
-                            60.0, 0.0);
-                    arrow.setFill(Color.LIGHTGRAY);
+                            20.0, 40.0,
+                            40.0, 0.0);
+                    arrow.setFill(Color.LIGHTBLUE);
                     arrow.setRotate((90 * conveyorBelt.getHeading().ordinal()) % 360);
                     this.getChildren().add(arrow);
+
+                } else if(action instanceof Gear){
+                    Gear gear = (Gear) action;
+                    Circle circle = new Circle(10);
+                    if(gear.isTurnsLeft()){
+                        circle.setFill(Color.YELLOW);
+                    } else {
+                        circle.setFill(Color.DARKBLUE);
+                    }
+                    getChildren().add(circle);
+                    updatePlayer();
                 }
             }
- Player player = space.getPlayer();
-            if (player != null) {
-                Polygon arrow = new Polygon(0.0, 0.0,
-                        10.0, 20.0, 20.0, 0.0);
-                try {
-                    arrow.setFill(Color.valueOf(player.getColor()));
-                } catch (Exception e) {
-                    arrow.setFill(Color.MEDIUMPURPLE);
-                }
-                arrow.setRotate((90 * player.getHeading().ordinal() % 360));
-                this.getChildren().add(arrow);
-     */
+            //Her tegnes spilleren
+            updatePlayer();
+
+        }
+    }
+}
 
