@@ -63,7 +63,9 @@ public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
+
     final private List<String> BOARD_OPTIONS = Arrays.asList("defaultboard", "small");
+
     final private RoboRally roboRally;
     private Board board;
 
@@ -81,22 +83,25 @@ public class AppController implements Observer {
     }
 
 
+
     /**
      * This method starts a new game, with players-number from 2 players to 6 players.
      */
     public void newGame() {
-            if (gameController != null) {
-                // The UI should not allow this, but in case this happens anyway.
-                // give the user the option to save the game or abort this operation!
-                if (!stopGame()) {
-                    return;
-                }
+
+        if (gameController != null) {
+            // The UI should not allow this, but in case this happens anyway.
+            // give the user the option to save the game or abort this operation!
+            if (!stopGame()) {
+                return;
             }
+        }
 
         /**
          * @param dialog1 her laves dialogen så brugeren kan vælge imellem forskellige spilleplader.
          * @author Anna Elise Høfde
          */
+
         ChoiceDialog<String> dialog1 = new ChoiceDialog<>(BOARD_OPTIONS.get(0), BOARD_OPTIONS);
         dialog1.setTitle("Board");
         dialog1.setHeaderText("Choose board");
@@ -117,19 +122,19 @@ public class AppController implements Observer {
         dialog.setHeaderText("Select number of players");
         Optional<Integer> result = dialog.showAndWait();
 
-            if (result.isPresent()) {
-                if (gameController != null) {
-                    // The UI should not allow this, but in case this happens anyway.
-                    // give the user the option to save the game or abort this operation!
-                    if (!stopGame()) {
-                        return;
-                    }
+        if (result.isPresent()) {
+            if (gameController != null) {
+                // The UI should not allow this, but in case this happens anyway.
+                // give the user the option to save the game or abort this operation!
+                if (!stopGame()) {
+                    return;
                 }
+            }
 
             // XXX the board should eventually be created programmatically or loaded from a file
             //     here we just create an empty board with the required number of players.
             //Board board = new Board(8,8);
-            //Board board = LoadBoard.LoadBoard1();
+            // Board board = LoadBoard.LoadBoard1();
             gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
@@ -149,14 +154,12 @@ public class AppController implements Observer {
 
     /**
      * In this method we save the game in database.
-     * @author Mohamad Anwar Meri, s215713@dtu.dk
      */
     public void saveGame() {
         // XXX needs to be implemented eventually
+        Repository repository = new Repository(new Connector());
         if (this.gameController.board.getGameId() != null) {
-            RepositoryAccess.getRepository().updateGameInDB(this.gameController.board);
-        } else {
-            RepositoryAccess.getRepository().createGameInDB(this.gameController.board);
+            repository.updateGameInDB(this.gameController.board);
         }
     }
 
@@ -211,7 +214,7 @@ public class AppController implements Observer {
         }
         return false;
 
-        }
+    }
 
     /**
      * This method will exit the RoboRally application, if the user press exit and ok button.

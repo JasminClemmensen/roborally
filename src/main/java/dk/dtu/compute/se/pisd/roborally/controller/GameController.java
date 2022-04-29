@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ekkart Kindler, ekki@dtu.dk
  * @author Mohamad Anwar Meri, s215713@dtu.dk
- * @author Jasmin
+ * @author Jasmin Clemmensen
  * @author Anna Elise Høfde.
  * @version $Id: $Id
  */
