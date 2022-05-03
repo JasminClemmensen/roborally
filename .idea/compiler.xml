@@ -9,8 +9,11 @@
         <module name="roborally" />
       </profile>
     </annotationProcessing>
+<<<<<<< HEAD
     <bytecodeTargetLevel>
       <module name="roborally" target="15" />
     </bytecodeTargetLevel>
+=======
+>>>>>>> origin/master
   </component>
 </project>
