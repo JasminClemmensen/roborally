@@ -14,7 +14,7 @@
           }
         }
       ],
-      "x": 0,
+      "x": 5,
       "y": 0
     },
     {
@@ -29,7 +29,7 @@
           }
         }
       ],
-      "x": 1,
+      "x": 4,
       "y": 0
     },
     {
@@ -71,7 +71,7 @@
         }
       ],
       "x": 1,
-      "y": 3
+      "y": 4
     },
     {
       "walls": [],
@@ -84,7 +84,7 @@
         }
       ],
       "x": 1,
-      "y": 4
+      "y": 3
     },
     {
       "walls": [],
@@ -109,8 +109,8 @@
           }
         }
       ],
-      "x": 1,
-      "y": 6
+      "x": 3,
+      "y": 4
     },
     {
       "walls": [
@@ -124,8 +124,8 @@
           }
         }
       ],
-      "x": 2,
-      "y": 2
+      "x": 5,
+      "y": 5
     },
     {
       "walls": [
@@ -139,8 +139,8 @@
           }
         }
       ],
-      "x": 3,
-      "y": 3
+      "x": 7,
+      "y": 4
     },
     {
       "walls": [
@@ -154,8 +154,8 @@
           }
         }
       ],
-      "x": 4,
-      "y": 4
+      "x": 3,
+      "y": 0
     },
     {
       "walls": [
@@ -169,8 +169,8 @@
           }
         }
       ],
-      "x": 5,
-      "y": 5
+      "x": 4,
+      "y": 1
     },
     {
       "walls": [
@@ -184,13 +184,25 @@
           }
         }
       ],
-      "x": 6,
-      "y": 6
+      "x": 4,
+      "y": 5
     },
     {
       "walls": [
         "EAST"
       ],
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "INSTANCE": {
+            "heading": "SOUTH"
+          }
+        }
+      ],
+      "x": 4,
+      "y": 2
+    },
+    {
       "actions": [
         {
           "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
@@ -199,8 +211,32 @@
           }
         }
       ],
-      "x": 7,
-      "y": 7
+      "x": 4,
+      "y": 3
+    },
+    {
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "INSTANCE": {
+            "turnsLeft": "true"
+          }
+        }
+      ],
+      "x": 2,
+      "y": 4
+    },
+    {
+      "actions": [
+        {
+          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "INSTANCE": {
+            "turnsLeft": "true"
+          }
+        }
+      ],
+      "x": 6,
+      "y": 6
     }
   ]
 }
