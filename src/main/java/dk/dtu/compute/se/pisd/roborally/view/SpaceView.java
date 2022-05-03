@@ -151,7 +151,7 @@ public class SpaceView extends StackPane implements ViewObserver {
                     Gear gear = (Gear) action;
                     Circle circle = new Circle(10);
                     if(gear.isTurnsLeft()){
-                        circle.setFill(Color.YELLOW);
+                        circle.setFill(Color.PURPLE);
                     } else {
                         circle.setFill(Color.DARKBLUE);
                     }

@@ -51,6 +51,8 @@ public class Repository implements IRepository {
 
 	private static final String GAME_STEP = "step";
 
+	private static final String GAME_BOARDNAME ="boardName";
+
 	private static final String PLAYER_PLAYERID = "playerID";
 
 	private static final String PLAYER_NAME = "name";
@@ -96,6 +98,7 @@ public class Repository implements IRepository {
 				ps.setNull(2, Types.TINYINT); // game.getPlayerNumber(game.getCurrentPlayer())); is inserted after players!
 				ps.setInt(3, game.getPhase().ordinal());
 				ps.setInt(4, game.getStep());
+				ps.setString(5, game.boardName);
 
 				// If you have a foreign key constraint for current players,
 				// the check would need to be temporarily disabled, since
@@ -175,6 +178,7 @@ public class Repository implements IRepository {
 				rs.updateInt(GAME_CURRENTPLAYER, game.getPlayerNumber(game.getCurrentPlayer()));
 				rs.updateInt(GAME_PHASE, game.getPhase().ordinal());
 				rs.updateInt(GAME_STEP, game.getStep());
+				//rs.updateString(GAME_BOARDNAME, game.boardName);
 				rs.updateRow();
 			} else {
 				// TODO error handling
@@ -237,7 +241,7 @@ public class Repository implements IRepository {
 
 	@Override
 	public Board loadGameFromDB(int id) {
-		Board game;
+		Board game = LoadBoard.loadBoard(null);
 		try {
 			// TODO here, we could actually use a simpler statement
 			//      which is not updatable, but reuse the one from
@@ -254,9 +258,13 @@ public class Repository implements IRepository {
 				// game = new Board(width,height);
 				// TODO and we should also store the used game board in the database
 				//      for now, we use the default game board
-				game = LoadBoard.loadBoard(null);
-				if (game == null) {
-					return null;
+				//game = LoadBoard.loadBoard(null);
+				//if (game == null) {
+					//return null;
+
+				String boardName = rs.getString(GAME_BOARDNAME);
+				if(boardName != null) {
+					game = LoadBoard.loadBoard(boardName);
 				}
 				playerNo = rs.getInt(GAME_CURRENTPLAYER);
 				// TODO currently we do not set the games name (needs to be added)
@@ -464,7 +472,7 @@ public class Repository implements IRepository {
 	}
 
 	private static final String SQL_INSERT_GAME =
-			"INSERT INTO Game(name, currentPlayer, phase, step) VALUES (?, ?, ?, ?)";
+			"INSERT INTO Game(name, currentPlayer, phase, step, boardName) VALUES (?, ?, ?, ?, ?)";
 
 	private PreparedStatement insert_game_stmt = null;
 
