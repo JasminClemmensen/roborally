@@ -56,6 +56,9 @@ public class Board extends Subject {
 
     private boolean stepMode;
 
+    
+
+
     public Board(int width, int height, @NotNull String boardName) {
         this.boardName = boardName;
         this.width = width;

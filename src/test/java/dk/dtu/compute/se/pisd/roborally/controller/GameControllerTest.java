@@ -1,5 +1,8 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.dal.GameInDB;
+import dk.dtu.compute.se.pisd.roborally.dal.Repository;
+import dk.dtu.compute.se.pisd.roborally.dal.RepositoryAccess;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
 import dk.dtu.compute.se.pisd.roborally.model.Heading;
 import dk.dtu.compute.se.pisd.roborally.model.Player;
@@ -10,6 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * This class is testing GameController necessary
+ * @author Mohamad Anwar Meri
+ */
 
 class GameControllerTest {
 
@@ -111,6 +120,60 @@ class GameControllerTest {
 
         gameController.turnLeft(player);
         assertEquals(player.getHeading(), Heading.WEST, " " + player.getName() + " should be heading " + player.getHeading() +  "!!");
+
+    }
+
+
+    @Test
+    void moveThreeForward() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.threeForward(current);
+        assertEquals(current, board.getSpace(0, 3).getPlayer(), " Player 1" + " should beSpace (0,3)!" );
+        assertEquals(Heading.SOUTH, current.getHeading(), " Player 1 " + " should be heading SOUTH!");
+        Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+
+    @Test
+    void moveBackWards() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.backwards(current);
+        assertEquals(current, board.getSpace(0, 0).getPlayer(), " Player 1" + " should beSpace (1,0)!" );
+        assertEquals(Heading.SOUTH, current.getHeading(), " Player 1 " + " should be heading SOUTH!");
+        Assertions.assertNull(board.getSpace(0, 1).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+
+    @Test
+    void uTurn() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+        current.setHeading(Heading.EAST);
+        gameController.uTurn(current);
+        Assertions.assertEquals(Heading.WEST, current.getHeading());
+    }
+
+
+    @Test
+    void robot_will_push_another_robot() {
+        Player player1 = gameController.board.getPlayer(1);
+        player1.setSpace(gameController.board.getSpace(3, 0));
+        player1.setHeading(Heading.NORTH);
+
+        Player player2 = gameController.board.getPlayer(2);
+        player2.setSpace(gameController.board.getSpace(3, 1));
+
+        gameController.moveForward(player1);
+
+        Assertions.assertEquals(3, player2.getSpace().x,"Player " + player2.getName() + " should be space at (3,1)");
+        Assertions.assertEquals(1, player2.getSpace().y,"Player " + player2.getName() + " should be space at (3,1)");
+
+        Assertions.assertEquals(3, player1.getSpace().x,"Player " + player1.getName() + " should be space at (3,7)");
+        Assertions.assertEquals(7, player1.getSpace().y,"Player " + player1.getName() + " should be space at (3,7)");
 
     }
 }

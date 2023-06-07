@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class PlayerView extends Tab implements ViewObserver {
 
@@ -62,6 +62,13 @@ public class PlayerView extends Tab implements ViewObserver {
 
     private GameController gameController;
 
+
+    /**
+     * <p>Constructor for PlayerView.</p>
+     *
+     * @param gameController a {@link dk.dtu.compute.se.pisd.roborally.controller.GameController} object.
+     * @param player a {@link dk.dtu.compute.se.pisd.roborally.model.Player} object.
+     */
     public PlayerView(@NotNull GameController gameController, @NotNull Player player) {
         super(player.getName());
         this.setStyle("-fx-text-base-color: " + player.getColor() + ";");
@@ -91,13 +98,13 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction( e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
 
         executeButton = new Button("Execute Program");
-        executeButton.setOnAction( e-> gameController.executePrograms());
+        executeButton.setOnAction(e -> gameController.executePrograms());
 
         stepButton = new Button("Execute Current Register");
-        stepButton.setOnAction( e-> gameController.executeStep());
+        stepButton.setOnAction(e -> gameController.executeStep());
 
         buttonPanel = new VBox(finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
@@ -132,6 +139,7 @@ public class PlayerView extends Tab implements ViewObserver {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateView(Subject subject) {
         if (subject == player.board) {

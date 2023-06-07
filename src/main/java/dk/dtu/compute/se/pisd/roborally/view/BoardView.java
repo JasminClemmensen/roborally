@@ -22,12 +22,16 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.Board;
+//import dk.dtu.compute.se.pisd.roborally.model.Checkpoints;
 import dk.dtu.compute.se.pisd.roborally.model.Phase;
 import dk.dtu.compute.se.pisd.roborally.model.Space;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -37,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class BoardView extends VBox implements ViewObserver {
 
@@ -52,6 +56,11 @@ public class BoardView extends VBox implements ViewObserver {
 
     private SpaceEventHandler spaceEventHandler;
 
+    /**
+     * <p>Constructor for BoardView.</p>
+     *
+     * @param gameController a {@link dk.dtu.compute.se.pisd.roborally.controller.GameController} object.
+     */
     public BoardView(@NotNull GameController gameController) {
         board = gameController.board;
 
@@ -79,8 +88,12 @@ public class BoardView extends VBox implements ViewObserver {
 
         board.attach(this);
         update(board);
+
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateView(Subject subject) {
         if (subject == board) {
@@ -117,5 +130,4 @@ public class BoardView extends VBox implements ViewObserver {
         }
 
     }
-
 }

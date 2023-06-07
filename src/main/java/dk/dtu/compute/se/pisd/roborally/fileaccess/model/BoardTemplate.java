@@ -21,6 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.fileaccess.model;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ import java.util.List;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class BoardTemplate {
 
@@ -37,5 +39,5 @@ public class BoardTemplate {
     public int height;
 
     public List<SpaceTemplate> spaces = new ArrayList<>();
-
 }
+

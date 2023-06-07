@@ -32,9 +32,9 @@ import java.util.WeakHashMap;
 /**
  * This is the subject of the observer design pattern roughly following
  * the definition of the GoF.
- * 
- * @author Ekkart Kindler, ekki@dtu.dk
  *
+ * @author Ekkart Kindler, ekki@dtu.dk
+ * @version $Id: $Id
  */
 public abstract class Subject {
 	
@@ -50,7 +50,7 @@ public abstract class Subject {
 	/**
 	 * This methods allows an observer to register with the subject
 	 * for update notifications when the subject changes.
-	 * 
+	 *
 	 * @param observer the observer who registers
 	 */
 	final public void attach(Observer observer) {
@@ -60,7 +60,7 @@ public abstract class Subject {
 	/**
 	 * This methods allows an observer to unregister from the subject
 	 * again.
-	 * 
+	 *
 	 * @param observer the observer who unregisters
 	 */
 	final public void detach(Observer observer) {

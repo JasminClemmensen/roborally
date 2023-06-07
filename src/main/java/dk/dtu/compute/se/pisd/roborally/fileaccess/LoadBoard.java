@@ -37,6 +37,7 @@ import java.io.*;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
+ * @version $Id: $Id
  */
 public class LoadBoard {
 
@@ -44,6 +45,12 @@ public class LoadBoard {
     private static final String DEFAULTBOARD = "defaultboard";
     private static final String JSON_EXT = "json";
 
+    /**
+     * <p>loadBoard.</p>
+     *
+     * @param boardname a {@link java.lang.String} object.
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.Board} object.
+     */
     public static Board loadBoard(String boardname) {
         if (boardname == null) {
             boardname = DEFAULTBOARD;
@@ -53,56 +60,64 @@ public class LoadBoard {
         InputStream inputStream = classLoader.getResourceAsStream(BOARDSFOLDER + "/" + boardname + "." + JSON_EXT);
         if (inputStream == null) {
             // TODO these constants should be defined somewhere
-            return new Board(8,8);
+            return new Board(8, 8);
         }
 
-		// In simple cases, we can create a Gson object with new Gson():
+        // In simple cases, we can create a Gson object with new Gson():
         GsonBuilder simpleBuilder = new GsonBuilder().
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
-		Board result;
-		// FileReader fileReader = null;
+        Board result;
+        // FileReader fileReader = null;
         JsonReader reader = null;
-		try {
-			// fileReader = new FileReader(filename);
-			reader = gson.newJsonReader(new InputStreamReader(inputStream));
-			BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
+        try {
+            // fileReader = new FileReader(filename);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            BoardTemplate template = gson.fromJson(reader, BoardTemplate.class);
 
-			result = new Board(template.width, template.height);
-			for (SpaceTemplate spaceTemplate: template.spaces) {
-			    Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-			    if (space != null) {
+            result = new Board(template.width, template.height, boardname);
+            for (SpaceTemplate spaceTemplate : template.spaces) {
+                Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+                if (space != null) {
                     space.getActions().addAll(spaceTemplate.actions);
                     space.getWalls().addAll(spaceTemplate.walls);
                 }
             }
-			reader.close();
-			return result;
-		} catch (IOException e1) {
+            reader.close();
+            return result;
+        } catch (IOException e1) {
             if (reader != null) {
                 try {
                     reader.close();
                     inputStream = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e2) {}
-			}
-		}
-		return null;
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {
+                }
+            }
+        }
+        return null;
     }
 
+    /**
+     * <p>saveBoard.</p>
+     *
+     * @param board a {@link dk.dtu.compute.se.pisd.roborally.model.Board} object.
+     * @param name  a {@link java.lang.String} object.
+     */
     public static void saveBoard(Board board, String name) {
         BoardTemplate template = new BoardTemplate();
         template.width = board.width;
         template.height = board.height;
 
-        for (int i=0; i<board.width; i++) {
-            for (int j=0; j<board.height; j++) {
-                Space space = board.getSpace(i,j);
+        for (int i = 0; i < board.width; i++) {
+            for (int j = 0; j < board.height; j++) {
+                Space space = board.getSpace(i, j);
                 if (!space.getWalls().isEmpty() || !space.getActions().isEmpty()) {
                     SpaceTemplate spaceTemplate = new SpaceTemplate();
                     spaceTemplate.x = space.x;
@@ -123,7 +138,7 @@ public class LoadBoard {
 
         // In simple cases, we can create a Gson object with new:
         //
-        //  Gson gson = new Gson();
+        //Gson gson = new Gson();
         //
         // But, if you need to configure it, it is better to create it from
         // a builder (here, we want to configure the JSON serialisation with
@@ -132,6 +147,17 @@ public class LoadBoard {
                 registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
                 setPrettyPrinting();
         Gson gson = simpleBuilder.create();
+
+        InputStream inputStream =
+                classLoader.getResourceAsStream(
+                        "boards/boardOne.json");
+
+        InputStreamReader streamReader =
+                new InputStreamReader(inputStream);
+        JsonReader reader = gson.newJsonReader(streamReader);
+
+        BoardTemplate boardTemplate =
+                gson.fromJson(reader, BoardTemplate.class);
 
         FileWriter fileWriter = null;
         JsonWriter writer = null;
@@ -145,14 +171,16 @@ public class LoadBoard {
                 try {
                     writer.close();
                     fileWriter = null;
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e2) {}
+                } catch (IOException e2) {
+                }
             }
         }
     }
-
 }
+

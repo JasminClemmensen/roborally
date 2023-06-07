@@ -30,11 +30,17 @@ import static dk.dtu.compute.se.pisd.roborally.model.Heading.SOUTH;
  * ...
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
+ * @version $Id: $Id
  */
 public class Player extends Subject {
 
+    /**
+     * Constant <code>NO_REGISTERS=5</code>
+     */
     final public static int NO_REGISTERS = 5;
+    /**
+     * Constant <code>NO_CARDS=8</code>
+     */
     final public static int NO_CARDS = 8;
 
     final public Board board;
@@ -48,6 +54,13 @@ public class Player extends Subject {
     private CommandCardField[] program;
     private CommandCardField[] cards;
 
+    /**
+     * <p>Constructor for Player.</p>
+     *
+     * @param board a {@link dk.dtu.compute.se.pisd.roborally.model.Board} object.
+     * @param color a {@link java.lang.String} object.
+     * @param name  a {@link java.lang.String} object.
+     */
     public Player(@NotNull Board board, String color, @NotNull String name) {
         this.board = board;
         this.name = name;
@@ -66,14 +79,29 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * <p>rollTheDice.</p>
+     *
+     * @return a int.
+     */
     public static int rollTheDice() {
         return 0;
     }
 
+    /**
+     * <p>Getter for the field <code>name</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * <p>Setter for the field <code>name</code>.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     */
     public void setName(String name) {
         if (name != null && !name.equals(this.name)) {
             this.name = name;
@@ -84,10 +112,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>color</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * <p>Setter for the field <code>color</code>.</p>
+     *
+     * @param color a {@link java.lang.String} object.
+     */
     public void setColor(String color) {
         this.color = color;
         notifyChange();
@@ -96,10 +134,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>space</code>.</p>
+     *
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.Space} object.
+     */
     public Space getSpace() {
         return space;
     }
 
+    /**
+     * <p>Setter for the field <code>space</code>.</p>
+     *
+     * @param space a {@link dk.dtu.compute.se.pisd.roborally.model.Space} object.
+     */
     public void setSpace(Space space) {
         Space oldSpace = this.space;
         if (space != oldSpace &&
@@ -115,10 +163,20 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * <p>Getter for the field <code>heading</code>.</p>
+     *
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.Heading} object.
+     */
     public Heading getHeading() {
         return heading;
     }
 
+    /**
+     * <p>Setter for the field <code>heading</code>.</p>
+     *
+     * @param heading a {@link dk.dtu.compute.se.pisd.roborally.model.Heading} object.
+     */
     public void setHeading(@NotNull Heading heading) {
         if (heading != this.heading) {
             this.heading = heading;
@@ -129,12 +187,37 @@ public class Player extends Subject {
         }
     }
 
+    /**
+     * <p>getProgramField.</p>
+     *
+     * @param i a int.
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField} object.
+     */
     public CommandCardField getProgramField(int i) {
         return program[i];
     }
 
+    /**
+     * <p>getCardField.</p>
+     *
+     * @param i a int.
+     * @return a {@link dk.dtu.compute.se.pisd.roborally.model.CommandCardField} object.
+     */
     public CommandCardField getCardField(int i) {
         return cards[i];
     }
 
+
+    public CommandCardField[] getProgram() {
+        return program;
+    }
+
+    public CommandCardField[] getCards() {
+        return cards;
+    }
+
+    public int getCardsNumber() {
+        return cards.length;
+    }
 }
+
